@@ -16,3 +16,19 @@ void gpio_set_input(uint8_t pin)
     current_value &= ~(1u << pin);
     *dir = current_value;
 }
+
+void gpio_write(uint8_t pin, uint8_t value)
+{
+    uint32_t current_value = *data;
+
+    if (value == 1)
+    {
+        current_value |= (1u << pin);
+    }
+    else if (value == 0)
+    {
+        current_value &= ~(1u << pin);
+    }
+
+    *data = current_value;
+}
