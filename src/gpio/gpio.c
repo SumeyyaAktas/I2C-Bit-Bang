@@ -32,3 +32,18 @@ void gpio_write(uint8_t pin, uint8_t value)
 
     *data = current_value;
 }
+
+uint8_t gpio_read(uint8_t pin)
+{
+    uint32_t current_value = *data; 
+    uint8_t result = (current_value >> pin) & 1u;
+    return result;
+}
+
+void gpio_init(void)
+{
+    gpio_set_output(SCL_PIN);
+    gpio_set_output(SDA_PIN);
+    gpio_write(SCL_PIN, 1);
+    gpio_write(SDA_PIN, 1);
+}
