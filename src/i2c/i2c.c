@@ -23,3 +23,15 @@ void i2c_start(void)
     gpio_write(SCL_PIN, 0);
     i2c_delay();
 }
+
+void i2c_stop(void)
+{
+    gpio_write(SDA_PIN, 0);
+    i2c_delay();
+
+    gpio_write(SCL_PIN, 1);
+    i2c_delay();
+
+    gpio_write(SDA_PIN, 1);
+    i2c_delay();
+}
