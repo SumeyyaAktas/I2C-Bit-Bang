@@ -64,3 +64,16 @@ static uint8_t i2c_read_bit(void)
 
     return bit;
 }
+
+uint8_t i2c_write_byte(uint8_t byte)
+{
+    for (int i = 7; i >= 0; i--)
+    {
+        uint8_t extract_bit = (byte >> i) & 1;
+        i2c_write_bit(extract_bit);
+    }
+    
+    uint8_t ack = i2c_read_bit();
+
+    return (ack == 0) ? 1 : 0;
+}
