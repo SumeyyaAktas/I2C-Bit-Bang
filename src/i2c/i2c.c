@@ -77,3 +77,16 @@ uint8_t i2c_write_byte(uint8_t byte)
 
     return (ack == 0) ? 1 : 0;
 }
+
+uint8_t i2c_read_byte(uint8_t ack)
+{
+    uint8_t result = 0;
+    for (int i = 7; i >= 0; i--)
+    {
+        result |= (i2c_read_bit() << i);
+    }
+
+    i2c_write_bit(ack ? 0 : 1);
+
+    return result;
+}
