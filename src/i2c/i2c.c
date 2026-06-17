@@ -3,7 +3,10 @@
 
 static void i2c_delay(void)
 {
-    for (volatile int i = 0; i < 100; i++);
+    for (volatile uint32_t i = 0; i < 100; i++)
+    {
+        __asm__ volatile("nop");
+    }
 }
 
 void i2c_init(void)
@@ -38,12 +41,23 @@ void i2c_stop(void)
 
 static void i2c_write_bit(uint8_t bit)
 {
-    gpio_write(SDA_PIN, bit);
+    if (bit)
+    {
+        gpio_set_input(SDA_PIN);
+    }
+    else
+    {
+        gpio_set_output(SDA_PIN);
+        gpio_write(SDA_PIN, 0);
+    }
+
     i2c_delay();
 
-    gpio_write(SCL_PIN, 1);
-    i2c_delay();
+    gpio_set_input(SCL_PIN);
+    
+    while(gpio_read(SCL_PIN) == 0);
 
+    gpio_set_output(SCL_PIN);
     gpio_write(SCL_PIN, 0);
     i2c_delay();
 }
